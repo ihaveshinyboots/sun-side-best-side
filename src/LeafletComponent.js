@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { MapContainer, TileLayer, Polyline, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -16,13 +16,12 @@ const FitToBounds = ({ lines }) => {
   return null;
 };
 
-const LeafletMapComponent = ({ lines, onClose }) => {
+const LeafletMapComponent = ({ lines }) => {
   return (
     <div>
-      <button onClick={onClose}>Close</button>
       <MapContainer
         center={[1.3521, 103.8198]} // Default center to Singapore
-        zoom={12} // Default zoom level
+        zoom={16} // Default zoom level
         style={{ height: "400px", width: "100%" }}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
@@ -33,7 +32,7 @@ const LeafletMapComponent = ({ lines, onClose }) => {
         {/* Render polylines based on lines */}
         {lines.map((line, index) => (
           <Polyline
-            key={index}
+            key={`${index}-${line.color}`} // Unique key for each line and color change
             positions={line.coordinates}
             color={line.color}
           />
