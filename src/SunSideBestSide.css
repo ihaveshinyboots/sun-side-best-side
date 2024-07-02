@@ -1,0 +1,123 @@
+/* Container styles for consistent width and centering */
+.dropdown-container, .timepicker-container {
+  position: relative;
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-direction: column; /* Stack items vertically */
+  width: 200px; /* Original width or adjust as needed */
+  margin: 0 auto; /* Center horizontally */
+  margin-bottom: 20px; /* Added margin for space between components */
+}
+
+/* Input styles for consistent appearance */
+input[type="text"], .flatpickr-wrapper input, .search-box {
+  padding: 10px;
+  width: 100%; /* Adjusted for consistent appearance */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  font-size: 14px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Focused input styles for better UX */
+input[type="text"]:focus, .flatpickr-wrapper input:focus, .search-box:focus {
+  border-color: #007BFF;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Dropdown list styles */
+.dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1000;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 4px 4px;
+  width: 100%; /* Adjust width to match container */
+}
+
+/* Dropdown item styles */
+.dropdown-item {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+/* Common button styles */
+.custom-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+.clear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 5px;
+  transition: background-color 0.3s;
+}
+
+.clear-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Hover effect for buttons */
+.custom-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+/* Modal overlay styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it's above other content */
+}
+
+/* Modal content styles */
+.modal-content {
+  position: absolute;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%; /* Occupy 80% of the screen width */
+  max-width: 800px; /* Maximum width to limit if screen size is very large */
+  max-height: 80%; /* Occupy up to 80% of the screen height */
+  overflow: auto;
+  z-index: 1100; /* Ensure it's above overlay */
+}
+
+/* Additional styles to customize modal appearance can be added here */
+.top-right {
+  position: absolute;
+  top: 10px; /* Adjust top position as needed */
+  right: 10px; /* Adjust right position as needed */
+  z-index: 1200; /* Ensure it's above modal content */
+}

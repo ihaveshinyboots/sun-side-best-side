@@ -6,7 +6,7 @@ import TimePicker from "./TimePicker";
 import LinesComponent from "./LinesComponent";
 import SearchableDropdown from "./SearchableDropdown";
 import Modal from "react-modal";
-import { getCurrentTime } from "./utils";
+import { getCurrentTime, addAverageTime } from "./utils";
 
 import "./SunSideBestSide.css";
 import "./Lines.css";
@@ -26,6 +26,7 @@ function YourComponent() {
   const [rightPercentage, setRightPercentage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tripEndTime, setTripEndTime] = useState("");
 
   useEffect(() => {
     const fetchMrt = async () => {
@@ -55,27 +56,40 @@ function YourComponent() {
   useEffect(() => {
     let pointA = { longitude: null, latitude: null };
     let pointB = { longitude: null, latitude: null };
-
-    const directions = [];
-    const lines = [];
-
-    // Use a for loop to iterate through csvData
-    //longitude,
-    // latitude,
-    // name,
-    //ignore,
-    //durationFromPrevious,
-    //stopDuration,
+    let pointsToNextStation = 0;
+    let durationFromPrevious = 0;
+    let avgTravelTimeMins = 0;
+    let computeTime = time;
+    let directions = [];
+    let lines = [];
 
     for (let index = 0; index < csvData.length - 1; index++) {
-      // find the next durationFromPrevious, then average it
+      if (pointsToNextStation === 0) {
+        for (let i = index + 1; i < csvData.length; i++) {
+          pointsToNextStation += 1;
+          if (!isNaN(csvData[i].durationFromPrevious)) {
+            durationFromPrevious = csvData[i].durationFromPrevious;
+            avgTravelTimeMins = durationFromPrevious / pointsToNextStation;
+            const stopDuration = csvData[i].stopDuration;
+            if (!isNaN(stopDuration)) {
+              computeTime = addAverageTime(computeTime, stopDuration);
+            }
+            break;
+          }
+        }
+      } else {
+        pointsToNextStation -= 1;
+        computeTime = addAverageTime(computeTime, avgTravelTimeMins);
+      }
       pointA.longitude = csvData[index].longitude;
       pointA.latitude = csvData[index].latitude;
       pointA.ignore = csvData[index].ignore;
+      pointA.stopDuration = csvData[index].stopDuration;
       pointB.longitude = csvData[index + 1].longitude;
       pointB.latitude = csvData[index + 1].latitude;
-      const ignore = pointA.ignore;
-      const direction = sunPosition({ pointA, pointB }, time);
+      const ignore = csvData[index].ignore;
+      console.log(computeTime);
+      const direction = sunPosition({ pointA, pointB }, computeTime);
       let color = "grey";
       if (ignore === "True") {
         directions.push("ignore");
@@ -128,6 +142,7 @@ function YourComponent() {
       setRightPercentage(0);
     }
     setIsLoading(false);
+    setTripEndTime(computeTime);
   }, [csvData, isFlipped, time]);
 
   const handleStartChange = (event) => {
@@ -205,14 +220,19 @@ function YourComponent() {
             <LeafletMapComponent lines={lineSets} onClose={closeModal} />
             <div
               className="line"
-              style={{ paddingTop: "10px", paddingBottom: "10px" }}
+              style={{ paddingTop: "20px", paddingBottom: "10px" }}
             >
               <LinesComponent />
             </div>
-
+            <div style={{ paddingBottom: "10px" }}>
+              Estimated trip end time: {tripEndTime.slice(0, 5)}
+            </div>
             <div>
-              <p>Left Percentage: {leftPercentage.toFixed(2)}%</p>
-              <p>Right Percentage: {rightPercentage.toFixed(2)}%</p>
+              {leftPercentage > rightPercentage ? (
+                <p>Sun will be on the left most of the time</p>
+              ) : (
+                <p>Sun will be on the right most of the time</p>
+              )}
             </div>
           </Modal>
         )}

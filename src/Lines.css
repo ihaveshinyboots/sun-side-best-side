@@ -1,0 +1,38 @@
+.lines-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto; /* Push container to the bottom */
+  margin-right: 20px; /* Adjust right margin as needed */
+  margin-bottom: 20px; /* Adjust bottom margin as needed */
+}
+
+.line {
+  display: flex;
+  align-items: center; /* Align items vertically centered */
+  margin-bottom: 10px; /* Adjust spacing between lines */
+}
+
+.line-bar {
+  display: inline-block;
+  width: 100px; /* Adjust the width of the line */
+  height: 4px; /* Adjust the thickness of the line */
+  margin-right: 10px; /* Adjust spacing between line and text */
+}
+
+.red {
+  background-color: red; /* Red line */
+}
+
+.blue {
+  background-color: blue; /* Blue line */
+}
+
+.grey {
+  background-color: grey; /* Grey line */
+}
+
+.line-text {
+  font-size: 18px; /* Adjust font size as needed */
+  font-weight: bold; /* Optionally adjust font weight */
+  color: black; /* Adjust text color */
+}
