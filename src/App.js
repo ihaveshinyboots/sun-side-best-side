@@ -10,6 +10,7 @@ import { getCurrentTime, addAverageTime } from "./utils";
 
 import "./SunSideBestSide.css";
 import "./Lines.css";
+import "./App.css";
 import "flatpickr/dist/flatpickr.min.css";
 
 Modal.setAppElement("#root"); // To avoid accessibility issues with React Modal
@@ -128,7 +129,9 @@ function YourComponent() {
     const leftCount = directions.filter(
       (direction) => direction === "left"
     ).length;
-    const rightCount = directions.length - leftCount;
+    const rightCount = directions.filter(
+      (direction) => direction === "right"
+    ).length;
     const totalCount = directions.length;
 
     setLineSets(lines);
@@ -211,9 +214,10 @@ function YourComponent() {
             className="modal-content"
             overlayClassName="modal-overlay"
           >
-            <button class="custom-button top-right" onClick={closeModal}>
-              Close
+            <button className="close-button top-right" onClick={closeModal}>
+              <span className="cross-icon">X</span>
             </button>
+
             <div>
               <h2>Sun Directions</h2>
             </div>
