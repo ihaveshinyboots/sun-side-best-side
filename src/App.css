@@ -16,3 +16,21 @@
 .App-link {
   color: #61dafb;
 }
+.close-button {
+  background-color: red;
+  border: none;
+  cursor: pointer;
+  padding: 10px; /* Adjust padding as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%; /* Makes the button circular */
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+}
+
+.cross-icon {
+  color: white; /* Text color */
+  font-size: 18px; /* Adjust font size as needed */
+  font-weight: bold; /* Adjust font weight as needed */
+}
