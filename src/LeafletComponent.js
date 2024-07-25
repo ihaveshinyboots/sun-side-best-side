@@ -1,6 +1,15 @@
 import React, { useEffect } from "react";
-import { MapContainer, TileLayer, Polyline, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Polyline,
+  Marker,
+  Popup,
+  useMap,
+} from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import otterIcon from "./otter.png"; // Adjust the path as necessary
 
 const FitToBounds = ({ lines }) => {
   const map = useMap();
@@ -16,7 +25,14 @@ const FitToBounds = ({ lines }) => {
   return null;
 };
 
-const LeafletMapComponent = ({ lines }) => {
+const LeafletMapComponent = ({ lines, otterCoordinates }) => {
+  const otterMarkerIcon = L.icon({
+    iconUrl: otterIcon,
+    iconSize: [32, 32], // Adjust the size of the icon
+    iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
+    popupAnchor: [0, -32], // Point from which the popup should open relative to the iconAnchor
+  });
+
   return (
     <div>
       <MapContainer
@@ -31,12 +47,22 @@ const LeafletMapComponent = ({ lines }) => {
 
         {/* Render polylines based on lines */}
         {lines.map((line, index) => (
-          <Polyline
-            key={`${index}-${line.color}`} // Unique key for each line and color change
-            positions={line.coordinates}
-            color={line.color}
-          />
+          <React.Fragment key={index}>
+            <Polyline positions={line.coordinates} color={line.color} />
+          </React.Fragment>
         ))}
+
+        {otterCoordinates.map((coord, index) => {
+          return (
+            <Marker
+              key={`otter-${index}`}
+              position={[coord.lat, coord.lng]}
+              icon={otterMarkerIcon}
+            >
+              <Popup>{`Otter Marker ${index + 1}`}</Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
     </div>
   );

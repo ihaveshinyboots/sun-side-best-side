@@ -25,12 +25,44 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%; /* Makes the button circular */
-  width: 40px; /* Adjust size as needed */
-  height: 40px; /* Adjust size as needed */
+  width: 20px; /* Adjust size as needed */
+  height: 20px; /* Adjust size as needed */
 }
 
 .cross-icon {
   color: white; /* Text color */
-  font-size: 18px; /* Adjust font size as needed */
+  font-size: 10px; /* Adjust font size as needed */
   font-weight: bold; /* Adjust font weight as needed */
+}
+
+.info-modal-content {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 20px;
+  border-radius: 4px 4px 0 0;
+  outline: none;
+  width: 100%;
+  max-width: 300px;
+}
+
+.info-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+.info-text {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  color: blue;
+  text-decoration: underline;
 }

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
+import "./SearchableDropdown.css";
 
 const SearchableDropdown = ({ label, value, onChange, options }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const containerRef = useRef(null);
 
   const handleSearchChange = (event) => {
@@ -12,7 +14,7 @@ const SearchableDropdown = ({ label, value, onChange, options }) => {
 
   const handleOptionClick = (option) => {
     onChange({ target: { value: option } });
-    setSearchTerm(option); // Set the search term to the selected option
+    setSearchTerm(option);
     setIsDropdownOpen(false);
   };
 
@@ -31,6 +33,7 @@ const SearchableDropdown = ({ label, value, onChange, options }) => {
 
   const clearSearchTerm = () => {
     setSearchTerm("");
+    onChange({ target: { value: "" } });
   };
 
   const filteredOptions = options.filter((option) =>
@@ -38,31 +41,26 @@ const SearchableDropdown = ({ label, value, onChange, options }) => {
   );
 
   return (
-    <div className="dropdown-container" ref={containerRef}>
+    <div
+      className={`dropdown-container ${isFocused ? "focused" : ""}`}
+      ref={containerRef}
+    >
       <label htmlFor={label}>{label}: </label>
-      <div
-        style={{ position: "relative", display: "flex", alignItems: "center" }}
-      >
+      <div className="search-input-wrapper">
         <input
           type="text"
           placeholder={`Search ${label.toLowerCase()}...`}
           value={searchTerm}
           onChange={handleSearchChange}
-          onFocus={() => setIsDropdownOpen(true)}
-          style={{ padding: "5px", width: "200px", marginRight: "10px" }}
+          onFocus={() => {
+            setIsDropdownOpen(true);
+            setIsFocused(true);
+          }}
+          onBlur={() => setIsFocused(false)}
         />
         {searchTerm && ( // Show clear button only when searchTerm is not empty
-          <button
-            onClick={clearSearchTerm}
-            style={{
-              borderRadius: "50%",
-              padding: "5px",
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-            }}
-          >
-            <span style={{ fontSize: "1.2em", color: "gray" }}>x</span>
+          <button className="clear-btn" onClick={clearSearchTerm}>
+            ✕
           </button>
         )}
       </div>

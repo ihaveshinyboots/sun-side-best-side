@@ -6,12 +6,11 @@ import TimePicker from "./TimePicker";
 import LinesComponent from "./LinesComponent";
 import SearchableDropdown from "./SearchableDropdown";
 import Modal from "react-modal";
-import { getCurrentTime, addAverageTime } from "./utils";
+import { getCurrentTime, addAverageTime, formatTime } from "./utils";
 
 import "./SunSideBestSide.css";
 import "./Lines.css";
 import "./App.css";
-import "flatpickr/dist/flatpickr.min.css";
 
 Modal.setAppElement("#root"); // To avoid accessibility issues with React Modal
 
@@ -27,7 +26,10 @@ function YourComponent() {
   const [rightPercentage, setRightPercentage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [tripEndTime, setTripEndTime] = useState("");
+  const [search, setSearch] = useState(false);
+  const [otterCoordinatesSet, setOtterCoordinatesSet] = useState([]);
 
   useEffect(() => {
     const fetchMrt = async () => {
@@ -49,10 +51,11 @@ function YourComponent() {
   }, []);
 
   useEffect(() => {
-    if (lineSets.length > 0) {
+    if (lineSets.length > 0 && search) {
       setIsModalOpen(true);
+      setSearch(false);
     }
-  }, [lineSets]);
+  }, [lineSets, otterCoordinatesSet, search]);
 
   useEffect(() => {
     let pointA = { longitude: null, latitude: null };
@@ -63,6 +66,7 @@ function YourComponent() {
     let computeTime = time;
     let directions = [];
     let lines = [];
+    let otterCoordinates = [];
 
     for (let index = 0; index < csvData.length - 1; index++) {
       if (pointsToNextStation === 0) {
@@ -88,8 +92,8 @@ function YourComponent() {
       pointA.stopDuration = csvData[index].stopDuration;
       pointB.longitude = csvData[index + 1].longitude;
       pointB.latitude = csvData[index + 1].latitude;
+      const landmarkName = csvData[index].name;
       const ignore = csvData[index].ignore;
-      console.log(computeTime);
       const direction = sunPosition({ pointA, pointB }, computeTime);
       let color = "grey";
       if (ignore === "True") {
@@ -115,7 +119,20 @@ function YourComponent() {
           }
         }
       }
-
+      if (landmarkName) {
+        const otterCoordinate = {
+          lat: pointA.latitude,
+          lng: pointA.longitude,
+        };
+        otterCoordinates.push(otterCoordinate);
+      }
+      if (index === csvData.length - 2) {
+        const otterCoordinate = {
+          lat: pointB.latitude,
+          lng: pointB.longitude,
+        };
+        otterCoordinates.push(otterCoordinate);
+      }
       const line = {
         coordinates: [
           { lat: pointA.latitude, lng: pointA.longitude },
@@ -125,6 +142,7 @@ function YourComponent() {
       };
       lines.push(line);
     }
+
     // Calculate percentage of left and right directions
     const leftCount = directions.filter(
       (direction) => direction === "left"
@@ -135,6 +153,7 @@ function YourComponent() {
     const totalCount = directions.length;
 
     setLineSets(lines);
+    setOtterCoordinatesSet(otterCoordinates);
 
     if (totalCount > 0) {
       setLeftPercentage((leftCount / totalCount) * 100);
@@ -159,14 +178,22 @@ function YourComponent() {
   const handleDestinationChange = (event) => {
     setDestination(event.target.value);
   };
+  const openInfoModal = () => setIsInfoModalOpen(true);
+  const closeInfoModal = () => setIsInfoModalOpen(false);
 
   const handleSearch = async () => {
     if (!start || !destination) {
       alert("Please select both Start and Destination before searching.");
       return;
     }
-
+    const startPrefix = start.split(" ")[0].substring(0, 2);
+    const destinationPrefix = destination.split(" ")[0].substring(0, 2);
+    if (startPrefix !== destinationPrefix) {
+      alert("Start and Destination stations must be on the same line.");
+      return;
+    }
     setIsLoading(true);
+
     try {
       const data = await loadData(start, destination);
       setIsFlipped(data.flip);
@@ -174,8 +201,17 @@ function YourComponent() {
     } catch (error) {
       console.error("Error loading data:", error);
     }
+    setSearch(true);
   };
   const closeModal = () => setIsModalOpen(false);
+
+  // Filter destination options based on start selection
+  const filteredDestinationOptions = stations.filter((station) => {
+    if (!start) return true; // If no start selected, show all options
+    const startPrefix = start.split(" ")[0].substring(0, 2);
+    const stationPrefix = station.split(" ")[0].substring(0, 2);
+    return startPrefix === stationPrefix;
+  });
 
   return (
     <div>
@@ -192,7 +228,7 @@ function YourComponent() {
           label="Destination"
           value={destination}
           onChange={handleDestinationChange}
-          options={stations}
+          options={filteredDestinationOptions}
         />
       </div>
       <TimePicker time={time} handleChange={handleChange} />
@@ -217,11 +253,14 @@ function YourComponent() {
             <button className="close-button top-right" onClick={closeModal}>
               <span className="cross-icon">X</span>
             </button>
-
             <div>
               <h2>Sun Directions</h2>
             </div>
-            <LeafletMapComponent lines={lineSets} onClose={closeModal} />
+            <LeafletMapComponent
+              lines={lineSets}
+              otterCoordinates={otterCoordinatesSet}
+              onClose={closeModal}
+            />
             <div
               className="line"
               style={{ paddingTop: "20px", paddingBottom: "10px" }}
@@ -229,7 +268,7 @@ function YourComponent() {
               <LinesComponent />
             </div>
             <div style={{ paddingBottom: "10px" }}>
-              Estimated trip end time: {tripEndTime.slice(0, 5)}
+              Estimated trip end time: {formatTime(tripEndTime)}
             </div>
             <div>
               {leftPercentage > rightPercentage ? (
@@ -237,6 +276,32 @@ function YourComponent() {
               ) : (
                 <p>Sun will be on the right most of the time</p>
               )}
+            </div>
+          </Modal>
+        )}
+        <p className="info-text" onClick={openInfoModal}>
+          Info
+        </p>
+
+        {isInfoModalOpen && (
+          <Modal
+            isOpen={isInfoModalOpen}
+            onRequestClose={closeInfoModal}
+            contentLabel="Info Modal"
+            className="modal-content"
+            overlayClassName="modal-overlay"
+          >
+            <button className="close-button top-right" onClick={closeInfoModal}>
+              <span className="cross-icon">X</span>
+            </button>
+            <div>
+              <h2 style={{ fontWeight: "bold", fontSize: "1.5em" }}>
+                How Do We Know Which Is Left or Right?
+              </h2>
+              <p>
+                The left or right side is determined based on the direction in
+                which the train is heading.
+              </p>
             </div>
           </Modal>
         )}

@@ -1,25 +1,16 @@
 export const getCurrentTime = () => {
-  const date = new Date();
-  const hours = date.getHours().toString().padStart(2, "0");
-  const minutes = date.getMinutes().toString().padStart(2, "0");
-  return `${hours}:${minutes}`;
+  return new Date();
 };
 
 export const addAverageTime = (selectedTime, averageMins) => {
-  if (selectedTime) {
-    // Split the time into hours, minutes, and seconds
-    const [hours, minutes, seconds] = selectedTime.split(":").map(Number);
-    const date = new Date();
-    date.setHours(hours, minutes, seconds || 0, 0);
+  const date = new Date(selectedTime);
+  date.setSeconds(date.getSeconds() + averageMins * 60);
 
-    // Add average travel time in seconds
-    date.setSeconds(date.getSeconds() + averageMins * 60);
+  return date;
+};
 
-    const updatedTime = `${date.getHours().toString().padStart(2, "0")}:${date
-      .getMinutes()
-      .toString()
-      .padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}`;
-    return updatedTime;
-  }
-  return selectedTime;
+export const formatTime = (date) => {
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
 };
