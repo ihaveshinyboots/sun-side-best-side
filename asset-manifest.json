@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/sun-side-best-side/static/css/main.549169c2.css",
-    "main.js": "/sun-side-best-side/static/js/main.74772baf.js",
+    "main.js": "/sun-side-best-side/static/js/main.959b0b03.js",
     "static/media/otter.png": "/sun-side-best-side/static/media/otter.09b8eb9f7caa84e03af1.png",
     "index.html": "/sun-side-best-side/index.html",
     "main.549169c2.css.map": "/sun-side-best-side/static/css/main.549169c2.css.map",
-    "main.74772baf.js.map": "/sun-side-best-side/static/js/main.74772baf.js.map"
+    "main.959b0b03.js.map": "/sun-side-best-side/static/js/main.959b0b03.js.map"
   },
   "entrypoints": [
     "static/css/main.549169c2.css",
-    "static/js/main.74772baf.js"
+    "static/js/main.959b0b03.js"
   ]
 }
