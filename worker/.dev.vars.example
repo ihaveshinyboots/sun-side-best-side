@@ -1,0 +1,5 @@
+# Copy to `.dev.vars` (git-ignored) and fill in for local `wrangler dev`.
+# In production these are set with `wrangler secret put <NAME>` instead.
+ONEMAP_EMAIL=
+ONEMAP_PASSWORD=
+APP_KEY=

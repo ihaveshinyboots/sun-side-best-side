@@ -1,0 +1,17 @@
+{
+  "short_name": "SunSide",
+  "name": "SunSide — shady seat finder",
+  "description": "Which side of the bus or train the sun will be on, so you can pick the shaded seat.",
+  "icons": [
+    { "src": "favicon.png", "sizes": "64x64", "type": "image/png" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#1a73e8",
+  "background_color": "#eaf4ff"
+}

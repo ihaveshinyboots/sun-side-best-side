@@ -1,0 +1,39 @@
+{
+  "mode": { "transit": "公交", "drive": "驾车" },
+  "search": {
+    "start": "起点",
+    "destination": "终点",
+    "button": "搜索",
+    "searching": "搜索中…",
+    "noResults": "无结果"
+  },
+  "route": {
+    "label": "路线 {{n}}",
+    "minutes": "{{count}} 分钟",
+    "transfers_other": "{{count}} 次换乘"
+  },
+  "units": { "km": "{{km}} 公里" },
+  "sun": {
+    "left": "阳光主要在您的左侧",
+    "right": "阳光主要在您的右侧",
+    "arrives": "约 {{time}} 到达"
+  },
+  "leg": {
+    "walk": "步行",
+    "to": "前往 {{place}}",
+    "bus": "巴士 {{code}}",
+    "line": "{{name}} 线"
+  },
+  "drive": { "via": "经 {{via}}" },
+  "legend": { "left": "左", "right": "右", "underground": "地下" },
+  "modal": {
+    "title": "我们如何判断左右？",
+    "body": "左右取决于车辆行驶的方向以及当时太阳的位置。",
+    "support": "您可以在此支持我"
+  },
+  "errors": {
+    "noRoutes": "未找到此行程的路线。",
+    "loadFailed": "无法加载路线：{{message}}"
+  },
+  "lang": { "label": "语言" }
+}

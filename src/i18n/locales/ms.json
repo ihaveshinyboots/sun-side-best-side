@@ -1,0 +1,39 @@
+{
+  "mode": { "transit": "Transit", "drive": "Pandu" },
+  "search": {
+    "start": "Mula",
+    "destination": "Destinasi",
+    "button": "Cari",
+    "searching": "Mencari…",
+    "noResults": "Tiada hasil"
+  },
+  "route": {
+    "label": "Laluan {{n}}",
+    "minutes": "{{count}} min",
+    "transfers_other": "{{count}} pertukaran"
+  },
+  "units": { "km": "{{km}} km" },
+  "sun": {
+    "left": "Matahari kebanyakannya di sebelah KIRI anda",
+    "right": "Matahari kebanyakannya di sebelah KANAN anda",
+    "arrives": "tiba ~{{time}}"
+  },
+  "leg": {
+    "walk": "Berjalan",
+    "to": "ke {{place}}",
+    "bus": "Bas {{code}}",
+    "line": "Laluan {{name}}"
+  },
+  "drive": { "via": "melalui {{via}}" },
+  "legend": { "left": "KIRI", "right": "KANAN", "underground": "BAWAH TANAH" },
+  "modal": {
+    "title": "Bagaimana Kami Tahu Kiri atau Kanan?",
+    "body": "Sisi kiri atau kanan berdasarkan arah kenderaan bergerak dan kedudukan matahari pada masa itu.",
+    "support": "Anda boleh menyokong saya di sini"
+  },
+  "errors": {
+    "noRoutes": "Tiada laluan ditemui untuk perjalanan ini.",
+    "loadFailed": "Tidak dapat memuatkan laluan: {{message}}"
+  },
+  "lang": { "label": "Bahasa" }
+}

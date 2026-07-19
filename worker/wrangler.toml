@@ -1,0 +1,14 @@
+name = "sunside-onemap-proxy"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+# Secrets (ONEMAP_EMAIL, ONEMAP_PASSWORD, APP_KEY) are set with
+# `wrangler secret put`, not here. Allowed origins live in src/index.js.
+
+# Optional token cache. The code reads env.TOKEN_KV, so keep the binding name.
+# Create the namespace, then paste its id below:
+#   npx wrangler kv namespace create TOKEN_KV
+[[kv_namespaces]]
+binding = "TOKEN_KV"
+id = "REPLACE_WITH_PROD_KV_ID"
+preview_id = "REPLACE_WITH_PREVIEW_KV_ID"

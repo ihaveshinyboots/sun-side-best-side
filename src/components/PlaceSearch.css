@@ -1,0 +1,93 @@
+/* Transparent wrapper: the fish artwork on each input is the visual. */
+.search-fields {
+  background: transparent;
+}
+
+.dropdown-container {
+  position: relative;
+  width: 100%;
+}
+
+/* The fish taper at head/tail, so overlap the transparent ends to sit close.
+   More negative = closer. */
+.dropdown-container + .dropdown-container {
+  margin-top: -14px;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input-wrapper.fish-box {
+  background: transparent;
+  padding: 0;
+  min-height: 44px;
+}
+
+/* fish-input.svg fills the field; left/right padding keeps the text on the
+   lighter belly, off the head and tail. */
+.fish-box input {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  min-height: 62px;
+  border: none;
+  outline: none;
+  background: url(../assets/fish-input.svg) center / 100% 100% no-repeat;
+  text-align: left;
+  padding: 10px 26% 10px 20%;
+  /* Must stay >= 16px or iOS/Android auto-zoom the page on focus. */
+  font-size: 16px;
+  color: #0b2b33;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95),
+    0 0 6px rgba(255, 255, 255, 0.95);
+}
+
+.fish-box input::placeholder {
+  color: #37707d;
+}
+
+/* Results dropdown */
+.dropdown-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 4px 0 0;
+  width: 100%;
+  max-height: 220px;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  z-index: 1000;
+}
+
+/* Cyan results panel with teal-accented result bars. */
+.dropdown-list.fish-list {
+  background-color: #ceffff;
+  border: 2px solid #469aa5;
+  border-radius: 14px;
+  padding: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+}
+
+.dropdown-item {
+  padding: 10px 12px;
+  cursor: pointer;
+  background: #ffffff;
+  border-left: 4px solid #469aa5;
+  border-radius: 6px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.dropdown-item:last-child {
+  margin-bottom: 0;
+}
+
+.dropdown-item:hover {
+  background: #e6fbff;
+}

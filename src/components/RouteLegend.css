@@ -1,0 +1,38 @@
+.lines-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: auto; /* pin to the bottom */
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.line-bar {
+  display: inline-block;
+  width: 100px;
+  height: 4px;
+  margin-right: 10px;
+}
+
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+
+.grey {
+  background-color: grey;
+}
+
+.line-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}

@@ -1,0 +1,40 @@
+{
+  "mode": { "transit": "Transit", "drive": "Drive" },
+  "search": {
+    "start": "Start",
+    "destination": "Destination",
+    "button": "Search",
+    "searching": "Searching…",
+    "noResults": "No results"
+  },
+  "route": {
+    "label": "Route {{n}}",
+    "minutes": "{{count}} min",
+    "transfers_one": "{{count}} transfer",
+    "transfers_other": "{{count}} transfers"
+  },
+  "units": { "km": "{{km}} km" },
+  "sun": {
+    "left": "Sun mostly on your LEFT",
+    "right": "Sun mostly on your RIGHT",
+    "arrives": "arrives ~{{time}}"
+  },
+  "leg": {
+    "walk": "Walk",
+    "to": "to {{place}}",
+    "bus": "Bus {{code}}",
+    "line": "{{name}} Line"
+  },
+  "drive": { "via": "via {{via}}" },
+  "legend": { "left": "LEFT", "right": "RIGHT", "underground": "UNDERGROUND" },
+  "modal": {
+    "title": "How Do We Know Which Is Left or Right?",
+    "body": "The left or right side is based on the direction the vehicle is heading and where the sun is at that time.",
+    "support": "You can support me here"
+  },
+  "errors": {
+    "noRoutes": "No routes found for this trip.",
+    "loadFailed": "Could not load route: {{message}}"
+  },
+  "lang": { "label": "Language" }
+}

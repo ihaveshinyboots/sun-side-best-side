@@ -1,0 +1,74 @@
+.dropdown-container, .timepicker-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 200px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.custom-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007BFF;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.clear-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 5px;
+  transition: background-color 0.3s;
+}
+
+.clear-button:hover {
+  background-color: #e0e0e0;
+}
+
+.custom-button:hover {
+  background-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80%;
+  overflow: auto;
+  z-index: 1100; /* above overlay */
+}
+
+.top-right {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1200; /* above modal content */
+}
