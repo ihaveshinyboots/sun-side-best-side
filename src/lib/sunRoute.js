@@ -5,7 +5,7 @@
 //     grey and not tallied.
 //   - Underground rail segments are grey and not tallied (no sun in a tunnel).
 //   - Drive routes are one line, every segment gets a side.
-import calculateSunPosition from "./sun/sunPosition";
+import calculateSunPosition, { getSunsetTime } from "./sun/sunPosition";
 import { isSegmentUnderground } from "./sun/underground";
 import { decodePolyline } from "./polyline";
 
@@ -13,6 +13,7 @@ const LEFT_COLOR = "red";
 const RIGHT_COLOR = "blue";
 const WALK_COLOR = "grey";
 const UNDERGROUND_COLOR = "grey"; // no sun side, like walk legs
+const NIGHT_COLOR = "grey"; // sun below the horizon, no side to pick
 
 // Rough metres between two lat/lng points (equirectangular, fine for the short
 // hops between polyline points).
@@ -43,6 +44,10 @@ function segmentColor(a, b, time, tally) {
     tally.right += meters;
     return RIGHT_COLOR;
   }
+  if (side === "night") {
+    tally.night += meters;
+    return NIGHT_COLOR;
+  }
   return WALK_COLOR; // "on the line", rare, not tallied
 }
 
@@ -51,6 +56,8 @@ function percentages(tally) {
   return {
     leftPercentage: total > 0 ? (tally.left / total) * 100 : 0,
     rightPercentage: total > 0 ? (tally.right / total) * 100 : 0,
+    // Night only when there was travel to evaluate but no daytime sun side.
+    isNight: total === 0 && tally.night > 0,
   };
 }
 
@@ -62,7 +69,7 @@ function percentages(tally) {
 export function buildItinerarySunData(itinerary) {
   const lines = [];
   const otterCoordinates = [];
-  const tally = { left: 0, right: 0 };
+  const tally = { left: 0, right: 0, night: 0 };
 
   const legs = itinerary?.legs || [];
 
@@ -109,11 +116,19 @@ export function buildItinerarySunData(itinerary) {
     }
   });
 
+  const firstLeg = legs[0];
+  const tripStart = itinerary?.startTime ?? firstLeg?.startTime;
+  const sunsetTime =
+    firstLeg?.from?.lat != null && firstLeg?.from?.lon != null && tripStart
+      ? getSunsetTime(new Date(tripStart), firstLeg.from.lat, firstLeg.from.lon)
+      : null;
+
   return {
     lines,
     otterCoordinates,
     ...percentages(tally),
     tripEndTime: itinerary?.endTime ? new Date(itinerary.endTime) : null,
+    sunsetTime,
   };
 }
 
@@ -129,7 +144,7 @@ export function buildItinerarySunData(itinerary) {
 export function buildDriveSunData(driveRoute, startMs) {
   const coords = decodePolyline(driveRoute?.route_geometry);
   const lines = [];
-  const tally = { left: 0, right: 0 };
+  const tally = { left: 0, right: 0, night: 0 };
 
   const totalSec = driveRoute?.route_summary?.total_time || 0;
   const totalMs = totalSec * 1000;
@@ -149,12 +164,17 @@ export function buildDriveSunData(driveRoute, startMs) {
     });
   }
 
+  const sunsetTime = coords[0]
+    ? getSunsetTime(new Date(startMs), coords[0].lat, coords[0].lng)
+    : null;
+
   return {
     lines,
     startMarker: coords[0] || null,
     endMarker: coords[coords.length - 1] || null,
     ...percentages(tally),
     tripEndTime: totalMs ? new Date(startMs + totalMs) : null,
+    sunsetTime,
     distanceM: driveRoute?.route_summary?.total_distance || 0,
     timeSec: totalSec,
   };

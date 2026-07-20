@@ -1,13 +1,22 @@
 // Normalizes the two OneMap response shapes (transit OTP vs drive) into one
 // array of route options for the UI.
-import i18next from "i18next";
 import { buildItinerarySunData, buildDriveSunData } from "./sunRoute";
+
+// OneMap returns a fixed set of drive subtitles; map them to translation keys
+// so the card label localizes. Anything else falls back to the raw subtitle.
+const DRIVE_SUBTITLE_KEYS = {
+  "Fastest route, assuming usual traffic": "drive.fastest",
+  "Alternative suggestion": "drive.alternative",
+  "Shortest distance": "drive.shortest",
+};
 
 /**
  * @param {Object} json   raw OneMap routing response
  * @param {'transit'|'drive'} mode
  * @param {{startMs?:number}} [opts]
- * @returns {Array<Object>} route options, each with { kind, label, minutes, sun, ... }
+ * @returns {Array<Object>} route options, each with { kind, minutes, sun, ... }.
+ *   Drive options carry labelKey (a translation key) or label (raw subtitle);
+ *   transit options are labelled by index in the UI.
  */
 export function buildRouteOptions(json, mode, { startMs = 0 } = {}) {
   if (!json) return [];
@@ -25,7 +34,8 @@ export function buildRouteOptions(json, mode, { startMs = 0 } = {}) {
       const via = r.viaRoute || (r.route_name || []).join(" · ") || "route";
       return {
         kind: "drive",
-        label: r.subtitle || i18next.t("drive.via", { via }),
+        labelKey: DRIVE_SUBTITLE_KEYS[r.subtitle] || null,
+        label: r.subtitle || null,
         via,
         minutes: Math.round((r.route_summary?.total_time || 0) / 60),
         km: ((r.route_summary?.total_distance || 0) / 1000).toFixed(1),
@@ -41,7 +51,6 @@ export function buildRouteOptions(json, mode, { startMs = 0 } = {}) {
     const sun = buildItinerarySunData(it);
     return {
       kind: "transit",
-      label: `Route ${i + 1}`,
       minutes: Math.round((it.duration || 0) / 60),
       transfers: it.transfers || 0,
       legs: it.legs || [],

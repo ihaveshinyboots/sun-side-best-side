@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { getLegPresentation, readableText } from "../lib/transitLines";
+import { translateInstruction } from "../lib/driveInstructions";
 
 const legMinutes = (leg) =>
   Math.max(1, Math.round((leg.endTime - leg.startTime) / 60000));
@@ -42,7 +43,7 @@ export const RouteChips = ({ legs = [] }) => (
 // Drive summary + turn-by-turn. OneMap instruction is an array: index 9 is the
 // readable text, index 5 the distance label.
 export const DriveBreakdown = ({ option }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
   <div style={{ textAlign: "left", maxWidth: 440, margin: "0 auto" }}>
     <div style={{ fontSize: 13, color: "#555", padding: "4px 0 8px" }}>
@@ -62,7 +63,7 @@ export const DriveBreakdown = ({ option }) => {
           fontSize: 13,
         }}
       >
-        <span>{step[9] || step[0]}</span>
+        <span>{translateInstruction(step, t, i18n.language)}</span>
         <span style={{ color: "#888", whiteSpace: "nowrap" }}>{step[5]}</span>
       </div>
     ))}

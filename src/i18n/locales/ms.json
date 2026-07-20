@@ -16,7 +16,9 @@
   "sun": {
     "left": "Matahari kebanyakannya di sebelah KIRI anda",
     "right": "Matahari kebanyakannya di sebelah KANAN anda",
-    "arrives": "tiba ~{{time}}"
+    "arrives": "tiba ~{{time}}",
+    "night": "Hari sudah gelap — tiada matahari untuk dielak. Kembali esok!",
+    "sunset": "matahari terbenam {{time}}"
   },
   "leg": {
     "walk": "Berjalan",
@@ -24,7 +26,12 @@
     "bus": "Bas {{code}}",
     "line": "Laluan {{name}}"
   },
-  "drive": { "via": "melalui {{via}}" },
+  "drive": {
+    "via": "melalui {{via}}",
+    "fastest": "Laluan terpantas (trafik biasa)",
+    "alternative": "Cadangan alternatif",
+    "shortest": "Jarak terpendek"
+  },
   "legend": { "left": "KIRI", "right": "KANAN", "underground": "BAWAH TANAH" },
   "modal": {
     "title": "Bagaimana Kami Tahu Kiri atau Kanan?",
@@ -35,5 +42,33 @@
     "noRoutes": "Tiada laluan ditemui untuk perjalanan ini.",
     "loadFailed": "Tidak dapat memuatkan laluan: {{message}}"
   },
-  "lang": { "label": "Bahasa" }
+  "lang": { "label": "Bahasa" },
+  "maneuver": {
+    "headN": "Menuju utara di {{road}}",
+    "headNE": "Menuju timur laut di {{road}}",
+    "headE": "Menuju timur di {{road}}",
+    "headSE": "Menuju tenggara di {{road}}",
+    "headS": "Menuju selatan di {{road}}",
+    "headSW": "Menuju barat daya di {{road}}",
+    "headW": "Menuju barat di {{road}}",
+    "headNW": "Menuju barat laut di {{road}}",
+    "turnRight": "Belok kanan ke {{road}}",
+    "turnLeft": "Belok kiri ke {{road}}",
+    "turnRightStay": "Belok kanan untuk kekal di {{road}}",
+    "turnLeftStay": "Belok kiri untuk kekal di {{road}}",
+    "slightLeftStay": "Serong kiri untuk kekal di {{road}}",
+    "slightRightStay": "Serong kanan untuk kekal di {{road}}",
+    "uTurn": "Buat pusingan U dan teruskan di {{road}}",
+    "mergeRight": "Bergabung ke kanan ke {{road}}",
+    "mergeLeft": "Bergabung ke kiri ke {{road}}",
+    "merge": "Bergabung ke {{road}}",
+    "rampOnto": "Ambil laluan masuk ke {{road}}",
+    "rampLeft": "Ambil laluan masuk sebelah kiri ke {{road}}",
+    "rampRight": "Ambil laluan masuk sebelah kanan ke {{road}}",
+    "keepLeft": "Ikut kiri ke {{road}}",
+    "keepRight": "Ikut kanan ke {{road}}",
+    "continue": "Teruskan ke {{road}}",
+    "continueOn": "Teruskan di {{road}}",
+    "arrived": "Anda telah sampai ke destinasi"
+  }
 }

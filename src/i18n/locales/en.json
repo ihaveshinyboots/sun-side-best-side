@@ -17,7 +17,9 @@
   "sun": {
     "left": "Sun mostly on your LEFT",
     "right": "Sun mostly on your RIGHT",
-    "arrives": "arrives ~{{time}}"
+    "arrives": "arrives ~{{time}}",
+    "night": "It's dark out — no sun to dodge. Check back tomorrow!",
+    "sunset": "sunset {{time}}"
   },
   "leg": {
     "walk": "Walk",
@@ -25,7 +27,12 @@
     "bus": "Bus {{code}}",
     "line": "{{name}} Line"
   },
-  "drive": { "via": "via {{via}}" },
+  "drive": {
+    "via": "via {{via}}",
+    "fastest": "Fastest route, assuming usual traffic",
+    "alternative": "Alternative suggestion",
+    "shortest": "Shortest distance"
+  },
   "legend": { "left": "LEFT", "right": "RIGHT", "underground": "UNDERGROUND" },
   "modal": {
     "title": "How Do We Know Which Is Left or Right?",
@@ -36,5 +43,33 @@
     "noRoutes": "No routes found for this trip.",
     "loadFailed": "Could not load route: {{message}}"
   },
-  "lang": { "label": "Language" }
+  "lang": { "label": "Language" },
+  "maneuver": {
+    "headN": "Head north on {{road}}",
+    "headNE": "Head northeast on {{road}}",
+    "headE": "Head east on {{road}}",
+    "headSE": "Head southeast on {{road}}",
+    "headS": "Head south on {{road}}",
+    "headSW": "Head southwest on {{road}}",
+    "headW": "Head west on {{road}}",
+    "headNW": "Head northwest on {{road}}",
+    "turnRight": "Turn right onto {{road}}",
+    "turnLeft": "Turn left onto {{road}}",
+    "turnRightStay": "Turn right to stay on {{road}}",
+    "turnLeftStay": "Turn left to stay on {{road}}",
+    "slightLeftStay": "Slight left to stay on {{road}}",
+    "slightRightStay": "Slight right to stay on {{road}}",
+    "uTurn": "Make a U-turn and continue on {{road}}",
+    "mergeRight": "Merge right onto {{road}}",
+    "mergeLeft": "Merge left onto {{road}}",
+    "merge": "Merge onto {{road}}",
+    "rampOnto": "Take the ramp onto {{road}}",
+    "rampLeft": "Take the ramp on the left onto {{road}}",
+    "rampRight": "Take the ramp on the right onto {{road}}",
+    "keepLeft": "Keep left onto {{road}}",
+    "keepRight": "Keep right onto {{road}}",
+    "continue": "Continue onto {{road}}",
+    "continueOn": "Continue on {{road}}",
+    "arrived": "You have arrived at your destination"
+  }
 }

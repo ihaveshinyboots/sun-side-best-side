@@ -16,7 +16,9 @@
   "sun": {
     "left": "阳光主要在您的左侧",
     "right": "阳光主要在您的右侧",
-    "arrives": "约 {{time}} 到达"
+    "arrives": "约 {{time}} 到达",
+    "night": "天黑了，没有太阳要躲。明天再来看看吧！",
+    "sunset": "日落 {{time}}"
   },
   "leg": {
     "walk": "步行",
@@ -24,7 +26,12 @@
     "bus": "巴士 {{code}}",
     "line": "{{name}} 线"
   },
-  "drive": { "via": "经 {{via}}" },
+  "drive": {
+    "via": "经 {{via}}",
+    "fastest": "最快路线（正常交通）",
+    "alternative": "备选建议",
+    "shortest": "最短距离"
+  },
   "legend": { "left": "左", "right": "右", "underground": "地下" },
   "modal": {
     "title": "我们如何判断左右？",
@@ -35,5 +42,33 @@
     "noRoutes": "未找到此行程的路线。",
     "loadFailed": "无法加载路线：{{message}}"
   },
-  "lang": { "label": "语言" }
+  "lang": { "label": "语言" },
+  "maneuver": {
+    "headN": "向北沿 {{road}} 行驶",
+    "headNE": "向东北沿 {{road}} 行驶",
+    "headE": "向东沿 {{road}} 行驶",
+    "headSE": "向东南沿 {{road}} 行驶",
+    "headS": "向南沿 {{road}} 行驶",
+    "headSW": "向西南沿 {{road}} 行驶",
+    "headW": "向西沿 {{road}} 行驶",
+    "headNW": "向西北沿 {{road}} 行驶",
+    "turnRight": "右转进入 {{road}}",
+    "turnLeft": "左转进入 {{road}}",
+    "turnRightStay": "右转继续沿 {{road}} 行驶",
+    "turnLeftStay": "左转继续沿 {{road}} 行驶",
+    "slightLeftStay": "稍向左转继续沿 {{road}} 行驶",
+    "slightRightStay": "稍向右转继续沿 {{road}} 行驶",
+    "uTurn": "掉头继续沿 {{road}} 行驶",
+    "mergeRight": "向右并线进入 {{road}}",
+    "mergeLeft": "向左并线进入 {{road}}",
+    "merge": "并线进入 {{road}}",
+    "rampOnto": "上匝道进入 {{road}}",
+    "rampLeft": "走左侧匝道进入 {{road}}",
+    "rampRight": "走右侧匝道进入 {{road}}",
+    "keepLeft": "靠左行驶进入 {{road}}",
+    "keepRight": "靠右行驶进入 {{road}}",
+    "continue": "继续行驶进入 {{road}}",
+    "continueOn": "继续沿 {{road}} 行驶",
+    "arrived": "您已到达目的地"
+  }
 }

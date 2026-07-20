@@ -22,14 +22,16 @@ const calculateAzimuth = (pointA, pointB) => {
 };
 
 const calculateSunPosition = ({ pointA, pointB }, time) => {
-  const azimuthAB = calculateAzimuth(pointA, pointB);
-
-  // suncalc azimuth is radians from SOUTH, positive westward.
+  // suncalc azimuth is radians from SOUTH, positive westward. altitude < 0
+  // means the sun is below the horizon, i.e. night — no side to pick.
   const sunPosition = SunCalc.getPosition(
     time,
     pointA.latitude,
     pointA.longitude
   );
+  if (sunPosition.altitude < 0) return "night";
+
+  const azimuthAB = calculateAzimuth(pointA, pointB);
   const azimuthSun = toDegrees(sunPosition.azimuth);
 
   // Cross product of the two direction vectors gives which side the sun is on.
@@ -37,21 +39,21 @@ const calculateSunPosition = ({ pointA, pointB }, time) => {
     x: Math.cos(toRadians(azimuthAB)),
     y: Math.sin(toRadians(azimuthAB)),
   };
-
   const vectorASun = {
     x: Math.cos(toRadians(azimuthSun)),
     y: Math.sin(toRadians(azimuthSun)),
   };
-
   const crossProduct = vectorAB.x * vectorASun.y - vectorAB.y * vectorASun.x;
 
-  if (crossProduct > 0) {
-    return "left";
-  } else if (crossProduct < 0) {
-    return "right";
-  } else {
-    return "on the line";
-  }
+  if (crossProduct > 0) return "left";
+  if (crossProduct < 0) return "right";
+  return "on the line";
 };
+
+// Sunset time (a Date) at a location on the day of `time`. suncalc access lives
+// in this file so its conventions stay in one place.
+export function getSunsetTime(time, lat, lng) {
+  return SunCalc.getTimes(time, lat, lng).sunset;
+}
 
 export default calculateSunPosition;

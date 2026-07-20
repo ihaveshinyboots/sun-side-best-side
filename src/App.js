@@ -45,6 +45,8 @@ function App() {
   const left = sun?.leftPercentage || 0;
   const right = sun?.rightPercentage || 0;
   const tripEndTime = sun?.tripEndTime || null;
+  const sunsetTime = sun?.sunsetTime || null;
+  const isNight = sun?.isNight || false;
 
   const startMarker = startPlace
     ? { lat: startPlace.lat, lng: startPlace.lng }
@@ -153,7 +155,11 @@ function App() {
                 <div className="route-card-head">
                   <strong>
                     {opt.kind === "drive"
-                      ? `🚗 ${opt.label}`
+                      ? `🚗 ${
+                          opt.labelKey
+                            ? t(opt.labelKey)
+                            : opt.label || t("drive.via", { via: opt.via })
+                        }`
                       : t("route.label", { n: opt.index + 1 })}
                   </strong>
                   <span className="muted">
@@ -170,11 +176,21 @@ function App() {
           </div>
 
           <div className="sun-summary">
-            {left > right ? `☀️ ${t("sun.left")}` : `☀️ ${t("sun.right")}`}
+            {isNight
+              ? `🌙 ${t("sun.night")}`
+              : left > right
+              ? `☀️ ${t("sun.left")}`
+              : `☀️ ${t("sun.right")}`}
             {tripEndTime && (
               <span className="muted">
                 {" · "}
                 {t("sun.arrives", { time: formatTime(tripEndTime) })}
+              </span>
+            )}
+            {sunsetTime && (
+              <span className="muted">
+                {" · "}
+                {t("sun.sunset", { time: formatTime(sunsetTime) })}
               </span>
             )}
           </div>
