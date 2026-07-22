@@ -26,13 +26,28 @@ destination, the app routes the journey and reports the sun side per leg, e.g.
 
 `origin/dest` (from OneMap search) → `services/routing.fetchRoute` (transit `pt`
 or `drive`, via the Worker) → `lib/routeModel.buildRouteOptions` →
-`lib/sunRoute` decodes each leg's polyline and, per segment, calls
-`lib/sun/sunPosition.calculateSunPosition` at that segment's interpolated clock
-time → tallies left/right → `components/MapView` draws the coloured lines and
-start/end otter markers.
+`lib/sunRoute` → `components/MapView` draws the coloured lines and start/end
+otter markers.
 
-Time is interpolated across each leg (not one timestamp for the whole trip) so a
-long ride near sunset is evaluated at the right sun angle per segment.
+### How `lib/sunRoute` scores a leg (per segment)
+
+It decodes the leg's polyline into N points, giving **N−1 segments** (a segment
+is the line between two consecutive points). For each segment it:
+
+1. Interpolates the clock time by segment index across the leg's real
+   `startTime`→`endTime`: `t = legStart + (legEnd − legStart) × (i / nSeg)`. So a
+   10-point / 10-minute MRT leg scores segment 1 at ~10:00, segment 2 at ~10:01,
+   … the last at ~10:09.
+2. Calls `lib/sun/sunPosition.calculateSunPosition(segment, t)` → left/right from
+   the segment's travel bearing vs the sun direction at `t`.
+3. Adds the segment's **length in metres** to a left/right tally (so the
+   percentages track distance, not raw segment count).
+
+Timing is **per leg** using OneMap's own leg times, not one timestamp for the
+trip and not a blind divide of the total time across all points — a
+walk-then-MRT trip scores the walk points across the walk's window and the MRT
+points across the ride's window. Walk legs and underground/night segments get no
+sun side (grey, not tallied).
 
 ## Layout
 

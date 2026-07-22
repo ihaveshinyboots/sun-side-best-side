@@ -5,7 +5,10 @@
     "destination": "Destination",
     "button": "Search",
     "searching": "Searching…",
-    "noResults": "No results"
+    "noResults": "No results",
+    "yourLocation": "Your location",
+    "myLocation": "My location",
+    "locating": "Locating…"
   },
   "route": {
     "label": "Route {{n}}",

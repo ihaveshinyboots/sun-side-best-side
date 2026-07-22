@@ -1,17 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { searchPlaces } from "../services/onemap";
+import { getCurrentPosition } from "../lib/geolocation";
 import "./PlaceSearch.css";
 
 const MAX_RESULTS = 9;
 
 // Place search backed by the OneMap search API, debounced as you type.
-const PlaceSearch = ({ label, onSelect }) => {
+// With `enableMyLocation`, the dropdown offers a "My location" row that fills
+// the field from the device GPS (free, no API call).
+const PlaceSearch = ({ label, onSelect, enableMyLocation = false }) => {
   const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [locating, setLocating] = useState(false);
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -61,6 +65,26 @@ const PlaceSearch = ({ label, onSelect }) => {
     setIsOpen(false);
   };
 
+  const handleMyLocation = async () => {
+    setLocating(true);
+    try {
+      const pos = await getCurrentPosition();
+      handleOptionClick({
+        lat: pos.lat,
+        lng: pos.lng,
+        value: t("search.yourLocation"),
+        current: true,
+      });
+    } catch (err) {
+      console.warn("Geolocation failed:", err.code, err.message);
+    } finally {
+      setLocating(false);
+    }
+  };
+
+  const term = searchTerm.trim();
+  const showList = isOpen && (enableMyLocation || term.length >= 2);
+
   return (
     <div className="dropdown-container" ref={containerRef}>
       <div className="search-input-wrapper fish-box">
@@ -69,25 +93,39 @@ const PlaceSearch = ({ label, onSelect }) => {
           placeholder={label}
           value={searchTerm}
           onChange={handleChange}
-          onFocus={() => results.length > 0 && setIsOpen(true)}
+          onFocus={() => setIsOpen(true)}
           aria-label={label}
         />
       </div>
-      {isOpen && searchTerm.trim().length >= 2 && (
+      {showList && (
         <ul className="dropdown-list fish-list">
-          {isLoading && <li className="dropdown-item">{t("search.searching")}</li>}
-          {!isLoading && results.length === 0 && (
-            <li className="dropdown-item">{t("search.noResults")}</li>
-          )}
-          {results.map((place, index) => (
+          {enableMyLocation && (
             <li
-              key={`${place.value}-${index}`}
-              onClick={() => handleOptionClick(place)}
-              className="dropdown-item"
+              onClick={handleMyLocation}
+              className="dropdown-item my-location"
             >
-              {place.value}
+              {locating ? t("search.locating") : t("search.myLocation")}
             </li>
-          ))}
+          )}
+          {term.length >= 2 && (
+            <>
+              {isLoading && (
+                <li className="dropdown-item">{t("search.searching")}</li>
+              )}
+              {!isLoading && results.length === 0 && (
+                <li className="dropdown-item">{t("search.noResults")}</li>
+              )}
+              {results.map((place, index) => (
+                <li
+                  key={`${place.value}-${index}`}
+                  onClick={() => handleOptionClick(place)}
+                  className="dropdown-item"
+                >
+                  {place.value}
+                </li>
+              ))}
+            </>
+          )}
         </ul>
       )}
     </div>

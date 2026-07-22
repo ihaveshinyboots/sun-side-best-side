@@ -30,6 +30,11 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:3000",
   "http://127.0.0.1:3000",
   "https://ihaveshinyboots.github.io",
+  // Native apps (Capacitor): iOS serves from capacitor://localhost, Android
+  // from http/https://localhost.
+  "capacitor://localhost",
+  "http://localhost",
+  "https://localhost",
 ]);
 
 const CORS_HEADERS = {

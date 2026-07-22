@@ -33,4 +33,20 @@ describe("buildItinerarySunData", () => {
   test("tripEndTime matches the itinerary end", () => {
     expect(result.tripEndTime.getTime()).toBe(itinerary.endTime);
   });
+
+  test("legSides: one per leg; walk has no side, transit legs get a side", () => {
+    expect(result.legSides).toHaveLength(itinerary.legs.length);
+    itinerary.legs.forEach((leg, i) => {
+      const s = result.legSides[i];
+      if (leg.transitLeg) {
+        expect(["left", "right", "underground", "night", null]).toContain(s.side);
+      } else {
+        expect(s.side).toBeNull();
+      }
+    });
+    // daytime fixture: at least one transit leg has a real left/right side
+    expect(
+      result.legSides.some((s) => s.side === "left" || s.side === "right")
+    ).toBe(true);
+  });
 });

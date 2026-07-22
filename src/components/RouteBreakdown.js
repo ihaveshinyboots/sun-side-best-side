@@ -47,7 +47,7 @@ export const DriveBreakdown = ({ option }) => {
   return (
   <div style={{ textAlign: "left", maxWidth: 440, margin: "0 auto" }}>
     <div style={{ fontSize: 13, color: "#555", padding: "4px 0 8px" }}>
-      🚗 {t("drive.via", { via: option.via })} ·{" "}
+      {t("drive.via", { via: option.via })} ·{" "}
       {t("route.minutes", { count: option.minutes })} ·{" "}
       {t("units.km", { km: option.km })}
     </div>
@@ -71,22 +71,42 @@ export const DriveBreakdown = ({ option }) => {
   );
 };
 
-// Detailed, leg-by-leg breakdown for one transit itinerary.
-const RouteBreakdown = ({ legs = [] }) => {
+// Which side of this leg the sun is on (or nothing for walk/underground/night).
+const SideChip = ({ side, t }) => {
+  if (!side || side.side === "left" || side.side === "right") {
+    if (!side || !side.side) return null;
+    const cls = side.side === "left" ? "sun-left" : "sun-right";
+    const label = side.side === "left" ? t("legend.left") : t("legend.right");
+    return <span className={`sun-cat ${cls}`}>{label}</span>;
+  }
+  if (side.side === "underground") {
+    return <span className="sun-cat sun-under">{t("legend.underground")}</span>;
+  }
+  return null; // night / walk: no side
+};
+
+// Detailed, leg-by-leg breakdown for one transit itinerary. Tapping a leg
+// highlights it on the map (via onLegClick); tapping the same leg clears it.
+const RouteBreakdown = ({ legs = [], legSides = [], highlightedLeg, onLegClick }) => {
   const { t } = useTranslation();
   return (
   <div style={{ textAlign: "left", maxWidth: 440, margin: "0 auto" }}>
     {legs.map((leg, i) => {
       const p = getLegPresentation(leg);
+      const active = highlightedLeg === i;
       return (
         <div
           key={i}
+          onClick={() => onLegClick && onLegClick(active ? null : i)}
           style={{
             display: "flex",
             alignItems: "center",
             gap: 10,
-            padding: "8px 0",
+            padding: "8px 8px",
             borderBottom: "1px solid #eee",
+            borderRadius: 8,
+            cursor: onLegClick ? "pointer" : "default",
+            background: active ? "#eef6ff" : "transparent",
           }}
         >
           <Badge presentation={p} />
@@ -94,6 +114,7 @@ const RouteBreakdown = ({ legs = [] }) => {
             <div style={{ fontWeight: 600 }}>{p.title}</div>
             {p.subtitle && <div style={{ color: "#666" }}>{p.subtitle}</div>}
           </div>
+          <SideChip side={legSides[i]} t={t} />
           <span style={{ fontSize: 12, color: "#888", whiteSpace: "nowrap" }}>
             {t("route.minutes", { count: legMinutes(leg) })}
           </span>

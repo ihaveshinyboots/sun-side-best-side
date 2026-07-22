@@ -5,7 +5,10 @@
     "destination": "Destinasi",
     "button": "Cari",
     "searching": "Mencari…",
-    "noResults": "Tiada hasil"
+    "noResults": "Tiada hasil",
+    "yourLocation": "Lokasi anda",
+    "myLocation": "Lokasi saya",
+    "locating": "Mencari lokasi…"
   },
   "route": {
     "label": "Laluan {{n}}",

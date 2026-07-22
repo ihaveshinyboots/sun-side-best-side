@@ -11,7 +11,7 @@
 /* The fish taper at head/tail, so overlap the transparent ends to sit close.
    More negative = closer. */
 .dropdown-container + .dropdown-container {
-  margin-top: -14px;
+  margin-top: -26px;
 }
 
 .search-input-wrapper {
@@ -33,7 +33,7 @@
   flex: 1 1 auto;
   min-width: 0;
   width: 100%;
-  min-height: 62px;
+  min-height: 54px;
   border: none;
   outline: none;
   background: url(../assets/fish-input.svg) center / 100% 100% no-repeat;
@@ -90,4 +90,11 @@
 
 .dropdown-item:hover {
   background: #e6fbff;
+}
+
+/* "My location" sits at the top of the Start dropdown, styled to stand out. */
+.dropdown-item.my-location {
+  font-weight: 700;
+  color: #2a9d8f;
+  border-left-color: #2a9d8f;
 }

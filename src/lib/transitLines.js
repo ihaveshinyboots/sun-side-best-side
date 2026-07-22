@@ -50,7 +50,7 @@ export function getLegPresentation(leg) {
   if (mode === "WALK") {
     return {
       kind: "walk",
-      badge: "🚶",
+      badge: "",
       color: WALK_COLOR,
       title: i18next.t("leg.walk"),
       subtitle: leg.to?.name ? i18next.t("leg.to", { place: leg.to.name }) : "",

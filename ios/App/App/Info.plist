@@ -6,6 +6,8 @@
 	<string>$(CAPACITOR_DEBUG)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>SunSide uses your location to set your trip's starting point.</string>
 	<key>CFBundleDisplayName</key>
         <string>SunSide</string>
 	<key>CFBundleExecutable</key>

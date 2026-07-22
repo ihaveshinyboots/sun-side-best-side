@@ -29,7 +29,28 @@ const FitToBounds = ({ lines }) => {
   return null;
 };
 
-const MapView = ({ lines, startMarker, endMarker, style }) => {
+// When a leg is tapped, zoom/pan the map to that leg's segments.
+const FocusLeg = ({ lines, legIndex }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (legIndex == null) return;
+    const pts = lines
+      .filter((l) => l.legIndex === legIndex)
+      .flatMap((l) => l.coordinates)
+      .map((c) => [c.lat, c.lng]);
+    if (pts.length) map.fitBounds(pts, { padding: [50, 50], maxZoom: 16 });
+  }, [legIndex, lines, map]);
+  return null;
+};
+
+const MapView = ({
+  lines,
+  startMarker,
+  endMarker,
+  highlightedLeg,
+  onLegClick,
+  style,
+}) => {
   return (
     <MapContainer
       center={[1.3521, 103.8198]} // Singapore
@@ -39,10 +60,31 @@ const MapView = ({ lines, startMarker, endMarker, style }) => {
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
       <FitToBounds lines={lines} />
+      <FocusLeg lines={lines} legIndex={highlightedLeg} />
 
-      {lines.map((line, index) => (
-        <Polyline key={index} positions={line.coordinates} color={line.color} weight={5} />
-      ))}
+      {lines.map((line, index) => {
+        const has = highlightedLeg != null;
+        const isHi = has && line.legIndex === highlightedLeg;
+        const clickable = onLegClick && line.legIndex != null;
+        return (
+          <Polyline
+            key={index}
+            positions={line.coordinates}
+            color={line.color}
+            weight={isHi ? 9 : 5}
+            opacity={has && !isHi ? 0.3 : 1}
+            interactive={clickable}
+            eventHandlers={
+              clickable
+                ? {
+                    click: () =>
+                      onLegClick(isHi ? null : line.legIndex),
+                  }
+                : undefined
+            }
+          />
+        );
+      })}
 
       {startMarker && (
         <Marker position={[startMarker.lat, startMarker.lng]} icon={startIcon} />

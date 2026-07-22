@@ -5,7 +5,6 @@ import MapView from "./components/MapView";
 import RouteLegend from "./components/RouteLegend";
 import PlaceSearch from "./components/PlaceSearch";
 import RouteBreakdown, { RouteChips, DriveBreakdown } from "./components/RouteBreakdown";
-import logo from "./assets/logo.svg";
 import { LANGUAGES } from "./i18n";
 import { loadTunnels } from "./services/undergroundData";
 import { fetchRoute } from "./services/routing";
@@ -32,6 +31,10 @@ function App() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [highlightedLeg, setHighlightedLeg] = useState(null);
+
+  // Clear the leg highlight when the selected route or the results change.
+  useEffect(() => setHighlightedLeg(null), [selectedIndex, routeOptions]);
 
   // Pull the latest community tunnel data once at startup (falls back to the
   // bundled snapshot until it arrives).
@@ -94,13 +97,13 @@ function App() {
         className={mode === "transit" ? "active" : ""}
         onClick={() => changeMode("transit")}
       >
-        🚆 {t("mode.transit")}
+        {t("mode.transit")}
       </button>
       <button
         className={mode === "drive" ? "active" : ""}
         onClick={() => changeMode("drive")}
       >
-        🚗 {t("mode.drive")}
+        {t("mode.drive")}
       </button>
     </div>
   );
@@ -112,6 +115,8 @@ function App() {
           lines={lines}
           startMarker={startMarker}
           endMarker={endMarker}
+          highlightedLeg={highlightedLeg}
+          onLegClick={setHighlightedLeg}
         />
       </div>
 
@@ -128,9 +133,12 @@ function App() {
             </option>
           ))}
         </select>
-        <img src={logo} alt="Sun Side Best Side" className="app-logo" />
         <div className="search-fields">
-          <PlaceSearch label={t("search.start")} onSelect={setStartPlace} />
+          <PlaceSearch
+            label={t("search.start")}
+            onSelect={setStartPlace}
+            enableMyLocation
+          />
           <PlaceSearch label={t("search.destination")} onSelect={setDestPlace} />
         </div>
         <button
@@ -155,11 +163,9 @@ function App() {
                 <div className="route-card-head">
                   <strong>
                     {opt.kind === "drive"
-                      ? `🚗 ${
-                          opt.labelKey
-                            ? t(opt.labelKey)
-                            : opt.label || t("drive.via", { via: opt.via })
-                        }`
+                      ? opt.labelKey
+                        ? t(opt.labelKey)
+                        : opt.label || t("drive.via", { via: opt.via })
                       : t("route.label", { n: opt.index + 1 })}
                   </strong>
                   <span className="muted">
@@ -177,10 +183,10 @@ function App() {
 
           <div className="sun-summary">
             {isNight
-              ? `🌙 ${t("sun.night")}`
+              ? t("sun.night")
               : left > right
-              ? `☀️ ${t("sun.left")}`
-              : `☀️ ${t("sun.right")}`}
+              ? t("sun.left")
+              : t("sun.right")}
             {tripEndTime && (
               <span className="muted">
                 {" · "}
@@ -197,7 +203,12 @@ function App() {
 
           {selected &&
             (selected.kind === "transit" ? (
-              <RouteBreakdown legs={selected.legs} />
+              <RouteBreakdown
+                legs={selected.legs}
+                legSides={selected.sun?.legSides}
+                highlightedLeg={highlightedLeg}
+                onLegClick={setHighlightedLeg}
+              />
             ) : (
               <DriveBreakdown option={selected} />
             ))}

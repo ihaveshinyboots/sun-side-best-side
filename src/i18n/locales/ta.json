@@ -5,7 +5,10 @@
     "destination": "இலக்கு",
     "button": "தேடு",
     "searching": "தேடுகிறது…",
-    "noResults": "முடிவுகள் இல்லை"
+    "noResults": "முடிவுகள் இல்லை",
+    "yourLocation": "உங்கள் இருப்பிடம்",
+    "myLocation": "எனது இருப்பிடம்",
+    "locating": "இடம் கண்டறிகிறது…"
   },
   "route": {
     "label": "வழி {{n}}",

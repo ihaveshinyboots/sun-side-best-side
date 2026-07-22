@@ -5,7 +5,10 @@
     "destination": "终点",
     "button": "搜索",
     "searching": "搜索中…",
-    "noResults": "无结果"
+    "noResults": "无结果",
+    "yourLocation": "您的位置",
+    "myLocation": "我的位置",
+    "locating": "定位中…"
   },
   "route": {
     "label": "路线 {{n}}",
