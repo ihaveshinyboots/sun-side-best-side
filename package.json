@@ -1,0 +1,50 @@
+{
+  "name": "sun-side-best-side",
+  "version": "0.1.0",
+  "homepage": "https://ihaveshinyboots.github.io/sun-side-best-side",
+  "private": true,
+  "dependencies": {
+    "@react-spring/web": "^9.7.3",
+    "axios": "^1.7.2",
+    "flatpickr": "^4.6.13",
+    "leaflet": "^1.9.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-flatpickr": "^3.10.13",
+    "react-leaflet": "^4.2.1",
+    "react-leaflet-draw": "^0.20.4",
+    "react-modal": "^3.16.1",
+    "react-scripts": "5.0.1",
+    "react-spring": "^9.7.3",
+    "suncalc": "^1.9.0"
+  },
+  "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  }
+}
